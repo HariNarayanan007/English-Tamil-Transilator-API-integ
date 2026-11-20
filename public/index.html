@@ -1,0 +1,456 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>English to Tamil Translator</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #f5f6fa;
+            color: #20243a;
+            min-height: 100vh;
+        }
+
+        header {
+            background: white;
+            border-bottom: 1px solid #e7e8ef;
+            padding: 22px 7%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 21px;
+            font-weight: 700;
+            color: #5846d8;
+        }
+
+        .tag {
+            color: #73778a;
+            font-size: 13px;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 55px auto;
+            padding: 0 22px;
+        }
+
+        .heading {
+            text-align: center;
+            margin-bottom: 35px;
+        }
+
+        .heading h1 {
+            font-size: 34px;
+            margin-bottom: 12px;
+        }
+
+        .heading p {
+            color: #73778a;
+            line-height: 1.6;
+        }
+
+        .translator {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 22px;
+        }
+
+        .panel {
+            background: white;
+            border: 1px solid #e5e6ef;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(30, 35, 70, 0.04);
+        }
+
+        .panel-header {
+            padding: 18px 20px;
+            border-bottom: 1px solid #eeeeF3;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .language {
+            color: #5846d8;
+        }
+
+        textarea {
+            border: none;
+            outline: none;
+            width: 100%;
+            min-height: 270px;
+            resize: vertical;
+            padding: 22px;
+            font-family: 'Inter', sans-serif;
+            font-size: 16px;
+            line-height: 1.8;
+            color: #303348;
+        }
+
+        #output {
+            font-family: 'Noto Sans Tamil', sans-serif;
+            background: white;
+        }
+
+        .panel-footer {
+            padding: 12px 20px;
+            border-top: 1px solid #eeeeF3;
+            color: #9295a5;
+            font-size: 12px;
+        }
+
+        .actions {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 25px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            border: none;
+            border-radius: 9px;
+            padding: 13px 23px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .translate-btn {
+            background: #5846d8;
+            color: white;
+        }
+
+        .secondary-btn {
+            background: white;
+            color: #5846d8;
+            border: 1px solid #dedaf8;
+        }
+
+        .status {
+            text-align: center;
+            margin-top: 20px;
+            min-height: 24px;
+            color: #666b7d;
+            font-size: 14px;
+        }
+
+        footer {
+            text-align: center;
+            padding: 25px;
+            color: #9295a5;
+            font-size: 12px;
+        }
+
+        @media(max-width: 700px) {
+            .translator {
+                grid-template-columns: 1fr;
+            }
+
+            .heading h1 {
+                font-size: 27px;
+            }
+
+            main {
+                margin-top: 35px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo">தமிழ் Translator</div>
+    <div class="tag">Powered by Gemini AI</div>
+</header>
+
+<main>
+
+    <div class="heading">
+        <h1>English to Tamil Translator</h1>
+        <p>Translate English text into natural Tamil using artificial intelligence.</p>
+    </div>
+
+    <section class="translator">
+
+        <div class="panel">
+
+            <div class="panel-header">
+                <span>English</span>
+                <span class="language">EN</span>
+            </div>
+
+            <textarea
+                id="input"
+                placeholder="Enter your English text here..."
+            ></textarea>
+
+            <div class="panel-footer">
+                <span id="count">0 / 12000 characters</span>
+            </div>
+
+        </div>
+
+
+        <div class="panel">
+
+            <div class="panel-header">
+                <span>Tamil Translation</span>
+                <span class="language">TA</span>
+            </div>
+
+            <textarea
+                id="output"
+                placeholder="Tamil translation will appear here..."
+                readonly
+            ></textarea>
+
+            <div class="panel-footer">
+                AI-generated translation
+            </div>
+
+        </div>
+
+    </section>
+
+
+    <div class="actions">
+
+        <button
+            id="translateBtn"
+            class="translate-btn"
+            onclick="translateText()"
+        >
+            Translate to Tamil
+        </button>
+
+        <button
+            class="secondary-btn"
+            onclick="copyTranslation()"
+        >
+            Copy Translation
+        </button>
+
+        <button
+            class="secondary-btn"
+            onclick="downloadTranslation()"
+        >
+            Download
+        </button>
+
+    </div>
+
+    <div class="status" id="status"></div>
+
+</main>
+
+
+<footer>
+    English → Tamil Translator | Built using Gemini API
+</footer>
+
+
+
+<script>
+    const input = document.getElementById("input");
+    const output = document.getElementById("output");
+    const statusText = document.getElementById("status");
+    const translateBtn = document.getElementById("translateBtn");
+    const count = document.getElementById("count");
+
+    // Character counter
+    input.addEventListener("input", () => {
+        count.textContent = input.value.length + " / 12000 characters";
+    });
+
+
+    // English to Tamil translation
+    async function translateText() {
+
+        const englishText = input.value.trim();
+
+        if (!englishText) {
+            statusText.textContent = "Please enter English text.";
+            return;
+        }
+
+        if (englishText.length > 12000) {
+            statusText.textContent = "Text exceeds the 12000 character limit.";
+            return;
+        }
+
+        // Prevent multiple requests
+        translateBtn.disabled = true;
+        translateBtn.textContent = "Translating...";
+
+        output.value = "";
+        statusText.textContent = "Connecting to Gemini AI...";
+
+        // Stop waiting if the backend does not respond in 60 seconds
+        const controller = new AbortController();
+
+        const timeoutId = setTimeout(() => {
+            controller.abort();
+        }, 60000);
+
+        try {
+
+            statusText.textContent = "Translating your text. Please wait...";
+
+            const response = await fetch("/api/translate", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    text: englishText
+                }),
+
+                signal: controller.signal
+
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(
+                    data.detail || "Translation failed. Please try again."
+                );
+            }
+
+            if (!data.translation || !data.translation.trim()) {
+                throw new Error("Gemini returned an empty translation.");
+            }
+
+            output.value = data.translation;
+
+            statusText.textContent =
+                "Translation completed successfully!";
+
+        }
+
+        catch (error) {
+
+            if (error.name === "AbortError") {
+
+                statusText.textContent =
+                    "Request timed out. Gemini is taking too long. Please try again.";
+
+            } else {
+
+                statusText.textContent =
+                    error.message || "Something went wrong. Please try again.";
+
+            }
+
+            console.error("Translation error:", error);
+
+        }
+
+        finally {
+
+            clearTimeout(timeoutId);
+
+            // Always restore the button
+            translateBtn.disabled = false;
+            translateBtn.textContent = "Translate to Tamil";
+
+        }
+
+    }
+
+
+    // Copy Tamil translation
+    async function copyTranslation() {
+
+        if (!output.value.trim()) {
+            statusText.textContent =
+                "No translation available to copy.";
+            return;
+        }
+
+        try {
+
+            await navigator.clipboard.writeText(output.value);
+
+            statusText.textContent = "Tamil translation copied!";
+
+        }
+
+        catch (error) {
+
+            output.select();
+
+            const copied = document.execCommand("copy");
+
+            statusText.textContent = copied
+                ? "Tamil translation copied!"
+                : "Unable to copy. Please select and copy manually.";
+
+        }
+
+    }
+
+
+    // Download Tamil translation
+    function downloadTranslation() {
+
+        if (!output.value.trim()) {
+            statusText.textContent =
+                "No translation available to download.";
+            return;
+        }
+
+        const blob = new Blob(
+            [output.value],
+            { type: "text/plain;charset=utf-8" }
+        );
+
+        const url = URL.createObjectURL(blob);
+
+        const link = document.createElement("a");
+
+        link.href = url;
+        link.download = "Tamil_Translation.txt";
+
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+
+        setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+        statusText.textContent = "Translation downloaded!";
+
+    }
+
+</script>
